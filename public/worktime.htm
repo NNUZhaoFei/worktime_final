@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>最佳工作序列</title>
+    <script type="text/javascript">
+        function Work(deadline, value, time,id) {
+            this.Deadline = deadline;
+            this.Value = value;
+            this.Time = time;
+            this.Id = id;
+        }
+
+
+        var flag = 0;  //判断此种排列是否复合要求。
+        var time = 0;  //用于记录工作时间
+        var totalvalue = 0; // 用于记录总价值
+        var result = Array(256);
+        for (var m = 0; m < 256; m++) {
+            result[m] = new Array(2);
+        }
+
+        var work0 = new Work(10, 2, 4,1);
+        var work1 = new Work(8, 3, 3,2);
+        var work2 = new Work(4, 3,2,3);
+        var work3 = new Work(2, 6,1,4);
+        var works = new Array(256);
+
+        for (var m = 0; m < 256; m++) {
+            works[m] = new Array(4);
+        }
+
+        var work = new Array(4);
+
+        work[0] = work0;
+        work[1] = work1;
+        work[2] = work2;
+        work[3] = work3;
+
+
+        var x1 = 0;
+        var x2 = 0;
+        var x3 = 0;
+        var x4 = 0;
+//        for (var i = 0; i < 3; i++) {
+//            
+//            timetotal = timetotal + works[i].Time;
+//        }
+//        document.write(timetotal);
+        for (var i = 0; i < 256; i++) {
+//            document.write("</br>");
+            for (var j = 0; j < 4; j++) {
+                x1 = parseInt(i / 64);
+                x2 = parseInt(i / 16);
+                while(x2>=4)
+                {
+                 x2=x2-4;
+                }
+                x3 = parseInt(i / 4);
+                while(x3>=4)
+                {
+                 x3=x3-4;
+                }
+                x4 = i % 4;
+                while(x4>=4)
+                {
+                 x4=x4-4;
+                }
+//                document.write(work[x1]);
+//                
+                works[i][0] = work[x1];
+                works[i][1] = work[x2];
+                works[i][2] = work[x3];
+                works[i][3] = work[x4];
+//                document.write(works[i][2].Value);
+                
+                
+                
+                        }
+
+        }
+
+
+
+        for (var i = 0; i < 256;i++ ) {
+            time=0;
+            if (works[i][0] == works[i][1] || works[i][0] == works[i][2] || works[i][0] == works[i][3]|| works[i][1] == works[i][2]|| works[i][1] == works[i][3]|| works[i][2] == works[i][3]) {
+                flag = 0;
+            }
+            else {
+                flag = 1;
+            }
+                for (var j = 0; j < 4; j++) {
+                    time = time + works[i][j].Time;
+//                    document.write(time);
+//                    document.write("  ");
+//                    document.write(works[i][j].Time);
+//                    document.write("</br>");
+                    if(time>works[i][j].Deadline){
+                         flag = 0;
+                    }
+
+                }
+//                document.write(flag);
+                 //                document.write("</br>");
+                 totalvalue = works[i][0].Value * works[i][1].Value * works[i][2].Value*works[i][3].Value;
+                 result[i][0] = totalvalue;
+                 result[i][1] = flag;
+        }
+        /***
+        for(var i =0;i<256;i++)
+        {    document.write('<br/>');
+             document.write(result[i][1]+" ");
+            for(var j =0;j<4;j++)
+            {
+                document.write(works[i][j].Id+'  ');
+
+            }
+        }
+      ***/
+
+        for (var i = 0; i < 256;i++ ) {
+            if (result[i][1] == 1) {
+                document.write("最佳工作顺序是:首先完成事件",works[i][0].Id,"  其次完成事件",works[i][1].Id,"  再其次完成事件",works[i][2].Id,"  最后完成事件",works[i][3].Id,"。");
+                document.write("</br>")
+                document.write("最佳工作顺序的工作价值是：",result[i][0],"。");
+                document.write("</br>");
+            }
+        }
+
+
+    </script>
+</head>
+<body
+</body>
+</html>
